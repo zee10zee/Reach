@@ -28,5 +28,5 @@ Reach makes users exchange contacts and get in touch in different means like cha
 - I learned how fantastic JWT works and how to handle token expiration and keep the page active
 
 ## Author
-- GitHub: [@you](https://github.com/you)
+- GitHub: https://github.com/zee10zee/
 - Email: abedkhan.noori10@gmail.com
