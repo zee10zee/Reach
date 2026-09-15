@@ -1,0 +1,184 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+#root {  /* If using React */
+  height: 100vh;
+  /* overflow: hidden; */
+}
+
+
+.main{
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); */
+  display: flex;
+  justify-content: space-between;
+  gap: 10;
+   
+}
+
+
+.chatsContainer{
+  width: 70%;
+}
+
+.usersContainer{
+  width: 30%;
+}
+
+.username { 
+  background: purple;
+  color: #fff;
+  padding: 4px 6px;
+  text-align: center;
+  border-radius: 30px;
+}
+
+.username:hover {
+   text-decoration: underline;
+   cursor: pointer;
+}
+
+.navbar { 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: lightsteelblue;
+  padding: 0 10px;
+  margin: 0;
+}
+
+.navRight{
+  display: flex;
+  gap: 5px;
+  list-style: none;
+  font-size: 12px;
+}
+
+.userContainer{
+  display: flex;
+  justify-content: space-around;
+  /* width: 50%; */
+}
+.flexDiv { 
+  display: flex;
+  gap: 10;
+}
+
+.loginState{
+  display: flex;
+  justify-content: space-around;
+  width: 70px;
+  align-items: center;
+}
+
+.userHeader{
+  margin-top: 5px;
+  text-align: right;
+  display: flex;
+  align-self: end;
+  gap: 5;
+}
+
+.userHeader button{
+  outline: none;
+  background: none;
+  border: none;
+  border: 1px solid #555;
+  padding: 4px 6px;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+.chatHeader{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.chatMain{
+  max-width: 600px;
+  min-width: 300px;
+  width: 100%;
+  margin: 0 auto;  
+  padding: 10px 10px 0 10px;
+}
+
+.messageList{
+  width: fit-content;
+  padding: 2px 4px;
+  border: 1px solid #888;
+  border-radius: 10px;
+}
+.lastChatOwnerName{
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  align-items: center;
+  font-weight: bold;
+
+}
+
+.lastMessage{
+  font-size: 10px;
+  text-align: justify;
+}
+
+.userMainContainer{
+  padding: 0 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.chatContainer{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 85vh;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.messageBox{
+  flex-grow: 1;
+  overflow: auto;
+  border:  1px solid indigo;
+  border-radius: 4px;
+}
+
+.chatFormBox{
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.messageDiv { 
+  width: 70%;
+  display: block;
+}
+.message{
+  width: 70%;
+}
+.sender{
+  margin-right: auto;
+}
+
+.receiver{
+  margin-left: auto;
+}
+
+
+.callButton{
+  background: none;
+  outline: none;
+  border: none;
+  border: 1px solid #555;
+  padding: 2px 5px;
+}
