@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query"
 
 
 const ChatForm = ({id : roomId}) => {
-    const { myMessage, setMyMessage, addMessages, loggedInUser} = userStore()
+    const { myMessage, setMyMessage, loggedInUser} = userStore()
     const queryClient = useQueryClient()
     // handle send message
     async function onSendMessage(e){
@@ -18,12 +18,15 @@ const ChatForm = ({id : roomId}) => {
         }
 
         const newMsg = {
-        id : uuidv4(), text : myMessage, from  : loggedInUser.id, 
-        roomId
+        tempId : uuidv4(), text : myMessage, from  : loggedInUser.id, 
+         pending : true
        }
 
-       socket.emit('newMessage', newMsg, roomId)
-       addMessages(newMsg)
+       socket.emit('newMessage', newMsg)
+        queryClient.setQueryData(['messages', roomId], (old = [])=>{
+        return [...old, newMsg]
+       })
+
        setMyMessage('')
     }
   return (

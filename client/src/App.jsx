@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import UserPage from './pages/UserPage'
 import ChatPage from './pages/ChatPage'
 import { ROUTES } from './routes'
+import CallPage from './pages/CallPage'
 const App = () => {
   return (
     <>
@@ -15,6 +16,7 @@ const App = () => {
           <Route path={ROUTES.HOME} element = {<Home />} />
           <Route path={ROUTES.USER(':id')} element = {<UserPage />} />
           <Route path={ROUTES.CHAT(':id')} element = {<ChatPage />} />
+          <Route path={ROUTES.CALL(':id')} element = {<CallPage />} />
         </Routes>
       </BrowserRouter>      
       </>

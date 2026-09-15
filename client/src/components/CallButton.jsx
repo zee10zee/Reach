@@ -6,9 +6,17 @@ import { Phone,Video} from 'lucide-react'
 const CallButton = () => {
     const navigate = useNavigate()
 
+    function handleCall(){
+      navigate(`/call/${'fdfdfd'}`)
+    }
+
   return (
     <div className={styles.userHeader}>
-        <button className = {styles.callButton}>{<Video size={15} />}</button>
+        <button
+           onClick={handleCall} 
+           className = {styles.callButton}>
+            {<Video size={15} />}
+        </button>
         <button className = {styles.callButton}>{<Phone size={15} />}</button>
     </div>
   )

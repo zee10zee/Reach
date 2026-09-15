@@ -9,7 +9,10 @@ const CallSection = ({user, roomId}) => {
     const navigate = useNavigate()
     const {loggedInUser} = userStore()
     console.log(!user.id, !loggedInUser.id)
-    if(!user.id || !loggedInUser.id) throw new Error('either user id or login user id is undefined')
+
+      if (!user?.id || !loggedInUser?.id) {
+        return <p>Loading...</p>
+    }
     
   return (
     <div className={styles.userHeader}>

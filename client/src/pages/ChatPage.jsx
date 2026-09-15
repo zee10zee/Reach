@@ -1,75 +1,69 @@
 import styles from '../App.module.css'
 import '../App.css'
 import { useParams } from 'react-router-dom'
-import { authenticateLocal, getStoredBuddy } from '../lib/utils.js'
+import { authenticateLocal } from '../lib/utils.js'
 import { useQuery } from '@tanstack/react-query'
 import socket from '../chats/socket.js'
-import { useCallback, useEffect, useRef} from 'react'
+import {useEffect} from 'react'
 import ChatForm from '../components/ChatForm.jsx'
-import { getBuddy } from '../actions/actions.js'
+import { getUser } from '../actions/actions.js'
 import MessageArea from '../components/MessageArea.jsx'
 import { userStore } from '../store/useStore.js'
 import CallButton from '../components/CallButton.jsx'
-
-
-function handleConnection(){
-    return console.log('connected socket is : ', socket.id)
-}
-
+import { handleConnection, handleUserJoin } from '../lib/socketEvents.js'
 
 const ChatPage = () => {
-    const {id} = useParams()
+    const {id:roomId} = useParams()
     const {loggedInUser} = userStore()
-    const [id1,id2] = id.split('_') 
+    const [id1,id2] = roomId.split('_') 
     const buddyId = id1 === loggedInUser.id ? id2 : id1
-
-    const {data:buddy, isPending} = useQuery({
-        queryKey : ['users', buddyId], 
-        queryFn : getBuddy, 
-        enabled :!!buddyId,
-        staleTime : 5* 60 * 1000
-    })
-
-    const idRef = useRef(id)
-    // authenticate user locally
+    console.log(buddyId, ' Buddy id')
+     // authenticate user locally
     authenticateLocal()
 
-    // socket event
-      useEffect(()=>{
-        socket.on('connect', handleConnection)
-        return ()=> socket.off('connect', handleConnection)
-    }, [])
+    // socket event functions
+   const {data:buddy, isError, isPending} = useQuery({
+        queryKey : ['users', buddyId], 
+        queryFn : () => getUser(buddyId), 
+        enabled : !!buddyId, 
+        staleTime : 1000 * 60 * 5 
+    })
 
-    const handleUserJoin = useCallback((data)=>{
-        idRef.current = id
-       console.log(data, ' joining user data')
-    }, [id])
-    // user join
+    // socket Events
     useEffect(()=>{
+        socket.on('connect', handleConnection)
         socket.on('userJoined', handleUserJoin)
-        return ()=> socket.off('userJoined', handleUserJoin)
-    }, [handleUserJoin])
+        return ()=> {
+            socket.off('userJoined', handleUserJoin)
+            socket.off('connect', handleConnection)
+        }
+    }, [])
 
     // emits
      useEffect(()=>{
-        const info = {from : loggedInUser?.id, roomId : id}
+        const info = {from : loggedInUser?.id, roomId}
         socket.emit('userJoin', info)
-    }, [loggedInUser.id, id])
+    }, [loggedInUser.id, roomId])
 
-       console.log(buddy, ' buuddy')
+     console.log(buddy, ' buddy or user')
+
   return (
     <div className={styles.chatMain}>
         <div className={styles.chatHeader}>
        
             <div className="left">
-                <p>{buddy.user?.firstname || 'buddy'}</p>
+                <p>{isPending ? 'loading username..'  : 
+                   isError   ? 'unknown Buddy' : 
+                    buddy.user.firstname
+                    }
+                </p>
               
             </div>
             <CallButton />
         </div>
         <div className={styles.chatContainer}>
-             <MessageArea roomId ={id} />
-             <ChatForm id = {id} />
+             <MessageArea roomId ={roomId} buddy = {buddy?.user?.firstname || 'unknow buddy'} />
+             <ChatForm id = {roomId} />
         </div>
     </div>
   )

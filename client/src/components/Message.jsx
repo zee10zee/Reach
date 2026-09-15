@@ -4,15 +4,13 @@ import { userStore } from '../store/useStore'
 import { getStoredBuddy } from '../lib/utils'
 
 
-const Message = ({message}) => {
-  const {loggedInUser} = userStore()
-  const [buddy, setBuddy] = useState(()=> getStoredBuddy())
-  
+const Message = ({message, buddy}) => {
+  const {loggedInUser} = userStore()  
  
   return (
   <div className={`message ${message.from === loggedInUser.id ? 
     'sender' : 'receiver'}`}>
-    <p><span>{message.from === loggedInUser.id ? 'me' : buddy.firstname || 'Buddy'} :  
+    <p><span>{message.from === loggedInUser.id ? 'me' : buddy || 'Buddy'} :  
       </span>{message.text}</p>
   </div>
   )

@@ -1,33 +1,20 @@
 import { api } from "../axios"
-import { getToken } from "../lib/utils"
+import { getToken, saveToken } from "../lib/utils"
 import { baseUrl } from '../pages/Home'
 
-export async function getBuddy(id){
-   console.log(id, ' id')
+// get user
+    export async function getUser(id){
+
         const token = getToken('accessToken')
-           if (!token) throw new Error('NO_TOKEN')
+        if(!token) throw new Error('token must be there')
 
-         try {
-            const {data} = await api.get(`/chat/${id}`, {
-            headers : {'Authorization' : `Bearer ${token}`}
-        })
+       const {data} = await api.get(`${baseUrl}/users/${id}`, {headers : {'Authorization' : `Bearer ${token}`}})
 
-        console.log(data, ' chat data')
+       if(!data) throw new Error('failure fetching a user')
 
-        if(!data?.buddy) throw new Error('Buddy not found')
-        
-        localStorage.setItem('chatBuddy', JSON.stringify(data.buddy))
-        return data.buddy
-         } catch (error) {
-            console.error('getBuddy error:', error)
-            throw error  // ✅ Re-throw so React Query knows it failed
-         }
-
+        saveToken('roomId', data.roomId)
+        return {user : data.user, roomId : data.roomId }
 }
-
-
-// load messages from db
-
 
 export async function loadConversation({queryKey}){
     const [_, roomId] = queryKey

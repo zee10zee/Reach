@@ -9,6 +9,7 @@ import chatRouter from './routes/chat.js'
 import userRouter from './routes/users.js'
 import {authenticateToken} from './middlewares/authenticate.js'
 import { authenticateSocketToken } from './middlewares/authenticateSocket.js'
+import { saveMessageToDb } from './utils.js'
 
 configDotenv()
 
@@ -46,16 +47,21 @@ io.on('connection', (socket)=>{
         socket.broadcast.to(roomId).emit('userJoined', {from : socket.user.userId, to  : data.roomId})
     })
 
-    socket.on('newMessage', (data)=>{
-           console.log('client message ', data.text, socket.user.userId)
-            socket.broadcast.to(data.roomId).emit('replyMessage', {text : data.text, from : socket.user.userId, roomId : data.roomId}
-        )
+    socket.on('newMessage', (newMessage)=>{
+           const savedMessage = saveMessageToDb(newMessage)
+            socket.broadcast.to(socket.roomId).emit('replyMessage', savedMessage)
     })
 
     // on user typing 
     socket.on('onTypoing', (data)=>{
         console.log(data, ' user typing data')
         socket.broadcast.to(socket.roomId).emit('onTypingevent', {user : data.user})
+    })
+
+    // on disconnect 
+    socket.on('disconnect', ()=>{
+        const leavingMessage = `${socket.user.userId} left the group ${socket.roomId}`
+        socket.broadcast.to(socket.roomId).emit('user-leave', leavingMessage)
     })
 })
 
