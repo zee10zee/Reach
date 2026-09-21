@@ -10,14 +10,13 @@ import { getUser } from '../actions/actions.js'
 import MessageArea from '../components/MessageArea.jsx'
 import { userStore } from '../store/useStore.js'
 import CallButton from '../components/CallButton.jsx'
-import { handleConnection, handleUserJoin } from '../lib/socketEvents.js'
+import {handleUserJoin } from '../lib/socketEvents.js'
 
 const ChatPage = () => {
     const {id:roomId} = useParams()
     const {loggedInUser} = userStore()
     const [id1,id2] = roomId.split('_') 
     const buddyId = id1 === loggedInUser.id ? id2 : id1
-    console.log(buddyId, ' Buddy id')
      // authenticate user locally
     authenticateLocal()
 
@@ -31,11 +30,9 @@ const ChatPage = () => {
 
     // socket Events
     useEffect(()=>{
-        socket.on('connect', handleConnection)
         socket.on('userJoined', handleUserJoin)
         return ()=> {
             socket.off('userJoined', handleUserJoin)
-            socket.off('connect', handleConnection)
         }
     }, [])
 
@@ -59,11 +56,14 @@ const ChatPage = () => {
                 </p>
               
             </div>
-            <CallButton />
+            <CallButton roomId={roomId} />
         </div>
         <div className={styles.chatContainer}>
              <MessageArea roomId ={roomId} buddy = {buddy?.user?.firstname || 'unknow buddy'} />
-             <ChatForm id = {roomId} />
+             <ChatForm 
+               id = {roomId} 
+               buddyId = {buddyId}
+               />
         </div>
     </div>
   )

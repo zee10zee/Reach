@@ -3,21 +3,25 @@ import styles from '../App.module.css'
 import { Phone,Video} from 'lucide-react'
 
 
-const CallButton = () => {
+const CallButton = ({roomId}) => {
     const navigate = useNavigate()
 
-    function handleCall(){
-      navigate(`/call/${'fdfdfd'}`)
+    function onClickAudioButton(){
+      navigate(`/call/${roomId}`)
     }
 
   return (
     <div className={styles.userHeader}>
         <button
-           onClick={handleCall} 
+            
            className = {styles.callButton}>
             {<Video size={15} />}
         </button>
-        <button className = {styles.callButton}>{<Phone size={15} />}</button>
+        <button
+           onClick={onClickAudioButton} 
+           className = {styles.callButton}>
+            {<Phone size={15} />}
+        </button>
     </div>
   )
 }

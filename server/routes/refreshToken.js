@@ -1,9 +1,11 @@
 import {Router} from 'express'
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 const tokenRefreshRouter = Router()
 
 tokenRefreshRouter.post('/', (req,res)=>{
     const {refreshToken} = req.body
+
+     console.log('refresh token from user conversatoins ', refreshToken)
 
     if(!refreshToken) return res.status(401).json('refresh token is required')
             

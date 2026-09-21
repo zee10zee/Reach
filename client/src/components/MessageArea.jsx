@@ -9,6 +9,15 @@ const MessageArea = ({roomId, buddy}) => {
     const queryClient = useQueryClient()
     const [typingMessage, setTypingMessage] = useState(null)
     const typingTimeoutRef = useRef(null)
+
+
+    console.log('roomID ', roomId)
+    const {data : messages, isError, error, isPending} = useQuery({
+    queryKey : ['messages', roomId], 
+    queryFn : loadConversation, 
+    enabled : !!roomId,
+    staleTime : 5 * 60 * 1000, 
+  })
     
       // on typing function
       const handleOnTyping = useCallback((data)=>{
@@ -35,13 +44,8 @@ const MessageArea = ({roomId, buddy}) => {
         } 
       }, [handleOnTyping, queryClient, roomId])
       
-        
-  const {data : messages, isError, error, isPending} = useQuery({
-    queryKey : ['messages', roomId], 
-    queryFn : loadConversation, 
-    enabled : !!roomId,
-    staleTime : 5 * 60 * 1000, 
-  })
+
+  console.log(messages, ' messages')
 
   return (
        <div className={styles.messageBox}>

@@ -15,14 +15,7 @@ html, body {
 }
 
 
-.main{
-  /* display: grid; */
-  /* grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); */
-  display: flex;
-  justify-content: space-between;
-  gap: 10;
-   
-}
+
 
 
 .chatsContainer{
@@ -181,4 +174,14 @@ html, body {
   border: none;
   border: 1px solid #555;
   padding: 2px 5px;
+}
+
+.incommingCallModal{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px soild #333;
+  border-radius: 10px;
+  z-index: 1000;
 }

@@ -10,6 +10,7 @@ export function authenticateToken(req,res,next){
 
         const token = authHeaders.split(' ')[1]
 
+
     if(!token) return res.status(401).json({error : 'NO token found'})
     
     const decoded = jwt.verify(token, 'whatdoyoumean?')

@@ -1,4 +1,8 @@
 
+.layout  { display: flex; height: 100vh; overflow: hidden; }
+.main    { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.content { flex: 1; overflow-y: auto; }
+
 .chatForm{
     display: flex;
     align-items: center;
@@ -6,12 +10,11 @@
 }
 
 .chatForm input{
-    width: 90%;
+    width: 100%;
     padding: 10px 4px;
 }
 
 .chatForm button{
-    width: 10%;
     padding: 10px 4px;
 }
 
@@ -31,4 +34,80 @@
     margin-left: auto;
     background: purple;
     color: #fff;
+}
+
+.sidebar{
+    max-width: 240px;
+    width: 90%;
+    padding: 20px;
+    margin: 0 auto;
+
+}
+
+.chats-preview-list li{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chats-preview-list li .nameDate, .message-status{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+}
+
+.message-status .message{
+    padding: 0;
+    margin: 0;
+}
+
+.search-container{
+    width: 100%;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 2px 6px;
+    margin: 10px 0px;
+}
+
+.search-container input{
+    outline: none;
+    background: none;
+    border: none;
+    padding: 4px 0;
+}
+
+.lastMessage{
+    padding: 3px 8px;
+    margin: 5px 0;
+    background: #efefef;
+    border-radius: 5px;
+}
+
+.lastMessage .nameDate{
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.lastMessage .text{
+  font-size: 11px;
+
+}
+
+.conversationPreviewContainer{
+    height: 100%;
+    overflow: auto;
+}
+
+.chats-preview-list{
+    height: 80%;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    /* scrollbar-width : thin; */
+    transition-delay: 0.5s;
+}
+
+.chats-preview-list:hover{
+    scrollbar-width: thin;
+    transition: all 0.5s;
 }

@@ -8,6 +8,15 @@ export const api = axios.create({
     baseURL : baseUrl
 })
 
+// api.interceptors.request.use((config) => {
+//   const token = localStorage.getItem('accessToken')
+//   if (token) {
+//     config.headers = config.headers ?? {}
+//     config.headers.Authorization = `Bearer ${token}`
+//   }
+//   return config
+// })
+
 
 api.interceptors.response.use(
     (response)=>{
@@ -28,15 +37,16 @@ api.interceptors.response.use(
         if(!refreshToken) return console.log('acess token not found')
 
         const newTokens = await getNewToken(refreshToken,error)
-        console.log(newTokens)
+         console.log(newTokens, ' new Token to replace th eexired one')
 
         saveToken('accessToken', newTokens.newAccToken)
         saveToken('refreshToken', newTokens.newRefToken)
 
         // update the old accessToken in error headers
         error.config.headers.Authorizations = `Bearer ${newTokens.newAccToken}`
+       console.log('action to get new token ')
 
-        // resend the failed request with updated access TOKEN  
+        // resend the failed request with updated access TOKEN
         return api(error.config)
     }
 )
@@ -44,5 +54,6 @@ api.interceptors.response.use(
 async function getNewToken(refreshToken){
     const {data} = await axios.post(`${baseUrl}/refresh-token`, {refreshToken})
     if(!data) return console.log(' no data response')
+         console.log(data, ' data of refresh token')
     return {newAccToken : data.accessToken, newRefToken : data.refreshToken}
 }

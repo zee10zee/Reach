@@ -1,8 +1,5 @@
-import socket from "../chats/socket"
 
-  export const handleConnection = ()=>{
-       return console.log('connected socket is : ', socket.id)
-    }
+ 
 
     export const handleUserJoin = (data)=>{
         console.log(data, ' joining user data')
@@ -18,15 +15,5 @@ import socket from "../chats/socket"
                }
                return [...old, newMsg]
             })
-        }
-//     const idRef = useRef(id)
-
-//   export const handleConnection = useCallback(()=>{
-//        return console.log('connected socket is : ', socket.id)
-//     }, [])
-
-//     export const handleUserJoin = useCallback((data)=>{
-//         idRef.current = id
-//         console.log(data, ' joining user data')
-//     }, [id])
+    }
     

@@ -4,10 +4,12 @@ import { userStore } from "../store/useStore"
 import {v4 as uuidv4} from 'uuid'
 import socket from "../chats/socket"
 import { useQueryClient } from "@tanstack/react-query"
+import { useState } from "react"
 
 
-const ChatForm = ({id : roomId}) => {
+const ChatForm = ({id : roomId, buddyId}) => {
     const { myMessage, setMyMessage, loggedInUser} = userStore()
+    const [sendLoading, setSendLoading] = useState(true)
     const queryClient = useQueryClient()
     // handle send message
     async function onSendMessage(e){
@@ -19,14 +21,20 @@ const ChatForm = ({id : roomId}) => {
 
         const newMsg = {
         tempId : uuidv4(), text : myMessage, from  : loggedInUser.id, 
-         pending : true
+         to : buddyId, pending : true, roomId : roomId
        }
 
        socket.emit('newMessage', newMsg)
-        queryClient.setQueryData(['messages', roomId], (old = [])=>{
-        return [...old, newMsg]
-       })
+       setSendLoading(false)
 
+        await queryClient.setQueryData(['messages', roomId], (old = [])=>{
+        return [...old, newMsg]        
+      })
+
+      // update the last message preview sidebar
+       queryClient.invalidateQueries({queryKey : ['lastMessages']})
+       
+      //reset the chat input
        setMyMessage('')
     }
   return (
@@ -38,7 +46,10 @@ const ChatForm = ({id : roomId}) => {
        value = {myMessage}  
        onChangeFn = {setMyMessage}
     />
-      <button type='submit'>Send</button>
+      <button 
+        disabled = {myMessage.length === 0}
+        type='submit'>{'Send'} 
+      </button>
     </form>
     </div>
   )

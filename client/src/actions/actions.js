@@ -3,7 +3,7 @@ import { getToken, saveToken } from "../lib/utils"
 import { baseUrl } from '../pages/Home'
 
 // get user
-    export async function getUser(id){
+export async function getUser(id){
 
         const token = getToken('accessToken')
         if(!token) throw new Error('token must be there')
@@ -33,5 +33,31 @@ export async function loadConversation({queryKey}){
         } catch (error) {
             console.log(error)
         }
+}
+
+export async function loadCurrentUserConversations() {
+    const token = getToken('accessToken')
+    console.log(token, ' the token for conversatins load')
+    if(!token) throw new Error('token is undefine here ')
+
+    try {
+        const {data} =  await api.get(`/chat/conversations/preview`, {
+            headers : {
+                'Authorization' : `Bearer ${token}`
+            }
+        })
+
+        console.log('conversation of current user ', data)
+        const {lastMessages} = data 
+        return lastMessages || []
+        
+    } catch (error) {
+    console.error('Error fetching conversation:', {
+        status: error?.response?.status,
+        data: error?.response?.data,
+        message: error?.message,
+    })
+    return null   // or rethrow if the caller should handle it
+}
 }
 

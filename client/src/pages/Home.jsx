@@ -44,21 +44,9 @@ useEffect(() => {
  })
 
   return (
-    <div className={styles.main}>
        
-      <div className={styles.chatsContainer}>
-        <h3> users Conversations </h3>
-
-        <div className="conversations-list">
-          <li className={styles.messageList}>
-            <div className={styles.lastChatOwnerName}>
-            <p>last chat owner</p>
-            <p>{formatDate(new Date())}</p>
-          </div>
-          <p className={styles.lastMessage}>last message text</p>
-          </li>
-        </div>
-     </div>
+      <>
+      
       <div className={styles.usersContainer}>
         {
         isError ? (<p>{error?.message}</p>)  : 
@@ -68,6 +56,6 @@ useEffect(() => {
         ))
        }
       </div>
-    </div>
+      </>
   )
 }
